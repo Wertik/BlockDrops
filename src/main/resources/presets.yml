@@ -1,0 +1,24 @@
+# Preset configuration for @name@
+#
+# Version: @version@
+
+wood:
+  target: OAK_LOG
+  rewards-one:
+    chance: 0.5
+    commands:
+      - 'say Hello %player%'
+      - 'p! me I got a reward!'
+    items:
+      item-one:
+        type: DIAMOND
+        amount: 1-3
+        name: '&3Cute diamond'
+        lore:
+          - '&7A cool diamond mined by &f%player%'
+        enchants:
+          - 'LUCK;1'
+        flags:
+          - 'HIDE_ENCHANTS'
+        #nbt:
+        #  - 'key;value'

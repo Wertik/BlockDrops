@@ -1,0 +1,78 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+}
+
+archivesBaseName = 'original-BlockDrops'
+group 'space.devport.wertik.blockdrops'
+sourceCompatibility = '8'
+version = '1.0.1'
+
+def pluginVersion = '1.0.1'
+def pluginName = 'BlockDrops'
+def mainClass = project.property("group") + "." + pluginName + "Plugin"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url = 'https://nexus.pvpcraft.cz/repository/devport/'
+        credentials {
+            username = 'devport-user'
+            password = devportPassword
+        }
+    }
+
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
+    }
+
+    maven {
+        url = 'https://repo.maven.apache.org/maven2'
+    }
+}
+
+shadowJar {
+    archiveBaseName.set(pluginName)
+    archiveClassifier.set('')
+    archiveVersion.set(project.property("version").toString())
+    relocate('space.devport.utils', project.property("group").toString() + ".utils")
+}
+
+processResources {
+    filter ReplaceTokens, tokens: ["version"   : pluginVersion,
+                                   "name"      : pluginName,
+                                   "main_class": mainClass]
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    shadow 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+
+    compile 'space.devport.utils:devportutils:3.7.0-SNAPSHOT'
+
+    compile 'com.google.code.gson:gson:2.8.5'
+
+    compile 'org.jetbrains:annotations:20.1.0'
+
+    compileOnly 'me.clip:placeholderapi:2.10.9'
+
+    compileOnly 'org.projectlombok:lombok:1.18.16'
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+    testCompile 'junit:junit:4.4'
+}

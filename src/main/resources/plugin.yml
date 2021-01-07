@@ -1,0 +1,9 @@
+name: @name@
+version: @version@
+main: @main_class@
+authors: [ qwz ]
+api-version: 1.13
+commands:
+  blockdrops:
+    description: Main plugin command.
+    aliases: [ bd ]

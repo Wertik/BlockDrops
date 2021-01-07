@@ -1,0 +1,10 @@
+# Configuration for @name@
+#
+# Version: @version@
+
+plugin-prefix: '&aBlockDrops &8| '
+debug-enabled: false
+
+# Enabled worlds.
+enabled-worlds:
+  - 'world'
