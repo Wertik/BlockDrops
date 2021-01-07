@@ -5,6 +5,13 @@
 plugin-prefix: '&aBlockDrops &8| '
 debug-enabled: false
 
+# Limitations configuration.
+limitations:
+  # Cancel vanilla drops when breaking leaves with shears.
+  shears: false
+  # Cancel rewards when using silk touch.
+  silk-touch: false
+
 # Enabled worlds.
 enabled-worlds:
   - 'world'

@@ -9,9 +9,9 @@ plugins {
 archivesBaseName = 'original-BlockDrops'
 group 'space.devport.wertik.blockdrops'
 sourceCompatibility = '8'
-version = '1.0.1'
+version = '1.1.0'
 
-def pluginVersion = '1.0.1'
+def pluginVersion = '1.1.0'
 def pluginName = 'BlockDrops'
 def mainClass = project.property("group") + "." + pluginName + "Plugin"
 
