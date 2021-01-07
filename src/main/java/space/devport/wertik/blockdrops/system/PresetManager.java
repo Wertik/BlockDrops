@@ -1,12 +1,10 @@
 package space.devport.wertik.blockdrops.system;
 
 import lombok.extern.java.Log;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.Nullable;
 import space.devport.utils.configuration.Configuration;
+import space.devport.utils.xseries.XMaterial;
 import space.devport.wertik.blockdrops.BlockDropsPlugin;
-import space.devport.wertik.blockdrops.BlockUtil;
 import space.devport.wertik.blockdrops.system.struct.BlockDropPreset;
 
 import java.util.HashMap;
@@ -31,9 +29,9 @@ public class PresetManager {
     }
 
     @Nullable
-    public BlockDropPreset getByState(BlockState state) {
+    public BlockDropPreset getByType(XMaterial material) {
         for (BlockDropPreset preset : loadedPresets.values()) {
-            if (BlockUtil.compareBlock(preset.getMaterial(), state))
+            if (preset.getMaterial() == material)
                 return preset;
         }
         return null;

@@ -1,16 +1,16 @@
 package space.devport.wertik.blockdrops.listeners;
 
-import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import space.devport.utils.logging.DebugLevel;
 import space.devport.utils.utility.reflection.ServerVersion;
+import space.devport.utils.xseries.XBlock;
+import space.devport.utils.xseries.XMaterial;
 import space.devport.wertik.blockdrops.BlockDropsPlugin;
 import space.devport.wertik.blockdrops.system.struct.BlockDropPreset;
 
@@ -22,11 +22,13 @@ public class BlockListener implements Listener {
         this.plugin = plugin;
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
-        final BlockState state = event.getBlock().getState();
+        Block block = event.getBlock();
+        final XMaterial xMaterial = XBlock.getType(block);
 
-        if (!plugin.getEnabledWorlds().contains(state.getWorld().getName()))
+        if (!plugin.getEnabledWorlds().contains(block.getWorld().getName()))
             return;
 
         final Player player = event.getPlayer();
@@ -37,7 +39,7 @@ public class BlockListener implements Listener {
                 return;
             }
 
-            BlockDropPreset preset = plugin.getPresetManager().getByState(state);
+            BlockDropPreset preset = plugin.getPresetManager().getByType(xMaterial);
 
             if (preset == null)
                 return;
