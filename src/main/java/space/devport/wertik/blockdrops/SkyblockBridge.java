@@ -10,7 +10,6 @@ import lombok.extern.java.Log;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import space.devport.utils.DevportManager;
 import space.devport.utils.utility.DependencyUtil;
@@ -23,7 +22,10 @@ public class SkyblockBridge extends DevportManager implements Listener {
 
     public SkyblockBridge(BlockDropsPlugin plugin) {
         super(plugin);
+    }
 
+    @Override
+    public void preEnable() {
         if (DependencyUtil.isInstalled("SuperiorSkyblock2"))
             plugin.registerListener(this);
     }
@@ -48,7 +50,6 @@ public class SkyblockBridge extends DevportManager implements Listener {
             return;
 
         this.hooked = true;
-        HandlerList.unregisterAll(this);
         log.info("Hooked into SuperiorSkyblock2.");
     }
 

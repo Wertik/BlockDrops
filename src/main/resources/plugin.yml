@@ -3,6 +3,7 @@ version: @version@
 main: @main_class@
 authors: [ qwz ]
 api-version: 1.13
+softdepend: [ SuperiorSkyblock2 ]
 commands:
   blockdrops:
     description: Main plugin command.
