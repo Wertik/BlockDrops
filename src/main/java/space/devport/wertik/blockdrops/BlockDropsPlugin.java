@@ -1,7 +1,6 @@
 package space.devport.wertik.blockdrops;
 
 import lombok.Getter;
-import org.bukkit.event.HandlerList;
 import space.devport.utils.DevportPlugin;
 import space.devport.utils.UsageFlag;
 import space.devport.utils.commands.struct.CommandResult;
@@ -19,6 +18,9 @@ public class BlockDropsPlugin extends DevportPlugin {
     @Getter
     private final Set<String> enabledWorlds = new HashSet<>();
 
+    @Getter
+    private final SkyblockBridge skyblockBridge = new SkyblockBridge(this);
+
     @Override
     public void onPluginEnable() {
         loadOptions();
@@ -26,7 +28,7 @@ public class BlockDropsPlugin extends DevportPlugin {
         this.presetManager = new PresetManager(this);
         presetManager.load();
 
-        registerListener(new BlockListener(this));
+        addListener(new BlockListener(this));
 
         buildMainCommand("blockdrops")
                 .withSubCommand(buildSubCommand("reload")
@@ -44,7 +46,6 @@ public class BlockDropsPlugin extends DevportPlugin {
 
     @Override
     public void onPluginDisable() {
-        HandlerList.unregisterAll(this);
     }
 
     @Override

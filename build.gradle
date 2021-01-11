@@ -33,6 +33,10 @@ repositories {
     maven {
         url = 'https://repo.maven.apache.org/maven2'
     }
+
+    maven {
+        url = 'https://jitpack.io'
+    }
 }
 
 shadowJar {
@@ -70,6 +74,8 @@ dependencies {
     compile 'org.jetbrains:annotations:20.1.0'
 
     compileOnly 'me.clip:placeholderapi:2.10.9'
+
+    compile 'com.github.OmerBenGera:SuperiorSkyblockAPI:b18'
 
     compileOnly 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'

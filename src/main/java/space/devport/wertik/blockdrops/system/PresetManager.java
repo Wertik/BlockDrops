@@ -13,14 +13,11 @@ import java.util.Map;
 @Log
 public class PresetManager {
 
-    private final BlockDropsPlugin plugin;
-
     private final Map<String, BlockDropPreset> loadedPresets = new HashMap<>();
 
     private final Configuration config;
 
     public PresetManager(BlockDropsPlugin plugin) {
-        this.plugin = plugin;
         this.config = new Configuration(plugin, "presets.yml");
     }
 

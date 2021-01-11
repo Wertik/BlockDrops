@@ -5,6 +5,9 @@
 plugin-prefix: '&aBlockDrops &8| '
 debug-enabled: false
 
+# Enable block break &
+superior-skyblock-hook: true
+
 # Limitations configuration.
 limitations:
   # Cancel vanilla drops when breaking leaves with shears.

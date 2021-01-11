@@ -7,9 +7,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import space.devport.utils.DevportListener;
 import space.devport.utils.utility.reflection.ServerVersion;
 import space.devport.utils.xseries.XBlock;
 import space.devport.utils.xseries.XMaterial;
@@ -17,24 +17,33 @@ import space.devport.wertik.blockdrops.BlockDropsPlugin;
 import space.devport.wertik.blockdrops.system.struct.BlockDropPreset;
 
 @Log
-public class BlockListener implements Listener {
+public class BlockListener extends DevportListener {
 
     private final BlockDropsPlugin plugin;
 
     public BlockListener(BlockDropsPlugin plugin) {
+        super(plugin);
         this.plugin = plugin;
     }
 
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
+
+        if (event.isCancelled())
+            return;
+
         Block block = event.getBlock();
         final XMaterial blockMaterial = XBlock.getType(block);
 
-        if (!plugin.getEnabledWorlds().contains(block.getWorld().getName()))
+        if (blockMaterial == null || !plugin.getEnabledWorlds().contains(block.getWorld().getName()))
             return;
 
         final Player player = event.getPlayer();
+
+        if (!plugin.getSkyblockBridge().canBreakOnIslandAt(player, block.getLocation()))
+            return;
+
         final ItemStack tool = getItemInMainHand(player);
 
         if (tool != null &&
