@@ -1,13 +1,16 @@
 package space.devport.wertik.blockdrops.system.struct;
 
 import lombok.Getter;
+import lombok.extern.java.Log;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import space.devport.utils.configuration.Configuration;
+import space.devport.utils.logging.DebugLevel;
 import space.devport.utils.struct.Rewards;
 
 import java.util.Random;
 
+@Log
 public class ChancedRewards {
 
     private final Random random = new Random();
@@ -26,8 +29,10 @@ public class ChancedRewards {
     }
 
     public void give(Player player) {
-        if (random.nextDouble() < chance) {
+        double attempt = random.nextDouble();
+        if (attempt < chance) {
             rewards.give(player);
+            log.log(DebugLevel.DEBUG, "Player received rewards with attempt/chance of " + attempt + "/" + chance);
         }
     }
 

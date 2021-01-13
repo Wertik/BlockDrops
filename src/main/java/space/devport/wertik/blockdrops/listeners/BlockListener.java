@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import space.devport.utils.DevportListener;
+import space.devport.utils.logging.DebugLevel;
 import space.devport.utils.utility.reflection.ServerVersion;
 import space.devport.utils.xseries.XBlock;
 import space.devport.utils.xseries.XMaterial;
@@ -27,35 +28,53 @@ public class BlockListener extends DevportListener {
     }
 
     @SuppressWarnings("deprecation")
+    private XMaterial parseMaterial(Block block) {
+        try {
+            return XBlock.getType(block);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent event) {
 
-        if (event.isCancelled())
+        if (event.isCancelled()) {
+            log.log(DebugLevel.DEBUG, "Event cancelled on lower priority.");
             return;
+        }
 
         Block block = event.getBlock();
-        final XMaterial blockMaterial = XBlock.getType(block);
+        final XMaterial blockMaterial = parseMaterial(block);
 
-        if (blockMaterial == null || !plugin.getEnabledWorlds().contains(block.getWorld().getName()))
+        if (blockMaterial == null) {
+            log.log(DebugLevel.DEBUG, "Invalid block material: " + block.getType().toString() + " data: " + block.getData());
             return;
+        }
+
+        if (!plugin.getEnabledWorlds().contains(block.getWorld().getName())) {
+            log.log(DebugLevel.DEBUG, "World " + block.getWorld().getName() + " is not enabled.");
+            return;
+        }
 
         final Player player = event.getPlayer();
-
-        if (!plugin.getSkyblockBridge().canBreakOnIslandAt(player, block.getLocation()))
-            return;
 
         final ItemStack tool = getItemInMainHand(player);
 
         if (tool != null &&
                 plugin.getConfig().getBoolean("limitations.silk-touch", true) &&
                 tool.getEnchantments().containsKey(Enchantment.SILK_TOUCH)) {
+            log.log(DebugLevel.DEBUG, "Silk touch limitation.");
             return;
         }
 
         BlockDropPreset preset = plugin.getPresetManager().getByType(blockMaterial);
 
-        if (preset == null)
+        if (preset == null) {
+            log.log(DebugLevel.DEBUG, "No preset assigned to material.");
             return;
+        }
 
         if (tool != null &&
                 plugin.getConfig().getBoolean("limitations.shears", true) &&
@@ -67,6 +86,7 @@ public class BlockListener extends DevportListener {
                 block.setType(Material.AIR);
         }
 
+        log.log(DebugLevel.DEBUG, "Checks passed... running rewards.");
         preset.give(player);
     }
 

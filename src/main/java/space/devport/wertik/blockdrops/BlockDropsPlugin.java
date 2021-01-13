@@ -18,9 +18,6 @@ public class BlockDropsPlugin extends DevportPlugin {
     @Getter
     private final Set<String> enabledWorlds = new HashSet<>();
 
-    @Getter
-    private final SkyblockBridge skyblockBridge = new SkyblockBridge(this);
-
     @Override
     public void onPluginEnable() {
         loadOptions();
